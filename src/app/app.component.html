@@ -1,0 +1,69 @@
+<h1 class="text-center mt-4 mb-4">Test Reactive Forms</h1>
+
+<form class="w-75 mx-auto mt-4" (ngSubmit)="onSubmit()" [formGroup]="dataForm">
+  <div class="mb-3 w-75 mx-auto">
+    <label for="name" class="form-label">User Name *</label>
+    <input type="email" class="form-control" id="name" name="name" placeholder="Jhon Roe" required formControlName="name">
+    <!-- Validations -->
+    <div *ngIf="dataForm.get('name')?.touched && dataForm.get('name')?.errors?.['required']" class="alert alert-danger py-1 mt-1" role="alert">
+      * This field is required
+    </div>
+    <div *ngIf="dataForm.get('name')?.touched && dataForm.get('name')?.errors?.['minlength']" class="alert alert-danger py-1 mt-1" role="alert">
+      * The name has entered contains very few characters (min: {{dataForm.get('name')?.errors?.['minlength']?.requiredLength}})
+    </div>
+    <div *ngIf="dataForm.get('name')?.touched && dataForm.get('name')?.errors?.['maxlength']" class="alert alert-danger py-1 mt-1" role="alert">
+      * The name has entered contains so much characters (max: {{dataForm.get('name')?.errors?.['maxlength']?.requiredLength}})
+    </div>
+  </div>
+
+  <div class="mb-3 w-75 mx-auto">
+    <label for="datalist" class="form-label">Select Your City *</label>
+    <input class="form-control" list="datalistOptions" id="datalist" name="datalist" placeholder="Type to search your city..." required formControlName="datalist">
+    <!-- Validations -->
+    <div *ngIf="dataForm.get('datalist')?.touched && dataForm.get('datalist')?.errors?.['required']" class="alert alert-danger py-1 mt-1" role="alert">
+      * This field is required
+    </div>
+    <datalist id="datalistOptions">
+      <option value="Colombia">
+      <option value="New York">
+      <option value="Seattle">
+      <option value="Los Angeles">
+      <option value="Chicago">
+    </datalist>
+  </div>
+
+  <div class="mb-3 w-75 mx-auto">
+    <label for="info" class="form-label">Adicional Info</label>
+    <textarea class="form-control" id="info" name="info" placeholder="Place adicional Info here"formControlName="info" rows="3"></textarea>
+    <!-- Validations -->
+    <div *ngIf="dataForm.get('info')?.touched && dataForm.get('info')?.errors?.['minlength']" class="alert alert-danger py-1 mt-1" role="alert">
+      * The information entered contains very few characters (min: {{dataForm.get('info')?.errors?.['minlength']?.requiredLength}})
+    </div>
+    <div *ngIf="dataForm.get('info')?.touched && dataForm.get('info')?.errors?.['maxlength']" class="alert alert-danger py-1 mt-1" role="alert">
+      * The information entered contains so much characters (max: {{dataForm.get('info')?.errors?.['maxlength']?.requiredLength}})
+    </div>
+  </div>
+
+  <div class="mb-3 w-75 mx-auto">
+    <label for="password" class="form-label">Set Password *</label>
+    <input type="password" class="form-control" id="password" name="password" placeholder="Your PIN here" required formControlName="password">
+    <div *ngIf="dataForm.get('password')?.touched && dataForm.get('password')?.errors?.['required']" class="alert alert-danger py-1 mt-1" role="alert">
+      * This field is required
+    </div>
+    <div *ngIf="dataForm.get('password')?.touched && dataForm.get('password')?.errors?.['minlength']" class="alert alert-danger py-1 mt-1" role="alert">
+      * The password entered contains very few characters (min: {{dataForm.get('password')?.errors?.['minlength']?.requiredLength}})
+    </div>
+    <div *ngIf="dataForm.get('password')?.touched && dataForm.get('password')?.errors?.['maxlength']" class="alert alert-danger py-1 mt-1" role="alert">
+      * The password entered contains so much characters (max: {{dataForm.get('password')?.errors?.['maxlength']?.requiredLength}})
+    </div>
+  </div>
+
+  <div class="mb-3 w-75 mx-auto">
+    <button type="submit" class="btn btn-primary px-4 py-2 mb-3 mx-auto" [disabled]="dataForm.invalid">
+      Enviar
+      <span class="mr-1" *ngIf="dataForm.valid">✔</span>
+      <span class="mr-1" *ngIf="dataForm.invalid">❌</span>
+    </button>
+  </div>
+
+</form>
