@@ -1,0 +1,11 @@
+.complete{
+  color: rgb(125, 179, 43)
+}
+.incomplete{
+  color: red
+}
+.count{
+  font-size: 10px;
+  margin-top: 3px;
+  margin-bottom: 0;
+}

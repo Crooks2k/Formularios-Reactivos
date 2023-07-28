@@ -1,9 +1,14 @@
 <h1 class="text-center mt-4 mb-4">Test Reactive Forms</h1>
 
+<h4 class="text-center mt-2 mb-4">Form Status:
+   <span *ngIf="dataForm.invalid == true" class="incomplete">Form is Incomplete</span>
+   <span *ngIf="dataForm.invalid == false" class="complete">Form is complete</span>
+</h4>
+
 <form class="w-75 mx-auto mt-4" (ngSubmit)="onSubmit()" [formGroup]="dataForm">
   <div class="mb-3 w-75 mx-auto">
     <label for="name" class="form-label">User Name *</label>
-    <input type="email" class="form-control" id="name" name="name" placeholder="Jhon Roe" required formControlName="name">
+    <input type="text" class="form-control" id="name" name="name" placeholder="Jhon Roe" required formControlName="name">
     <!-- Validations -->
     <div *ngIf="dataForm.get('name')?.touched && dataForm.get('name')?.errors?.['required']" class="alert alert-danger py-1 mt-1" role="alert">
       * This field is required
@@ -13,6 +18,23 @@
     </div>
     <div *ngIf="dataForm.get('name')?.touched && dataForm.get('name')?.errors?.['maxlength']" class="alert alert-danger py-1 mt-1" role="alert">
       * The name has entered contains so much characters (max: {{dataForm.get('name')?.errors?.['maxlength']?.requiredLength}})
+    </div>
+  </div>
+
+  <div class="mb-3 w-75 mx-auto">
+    <label for="email" class="form-label">Email</label>
+    <input type="email" class="form-control" id="email" name="email" placeholder="Example@example.com" required formControlName="email">
+    <div *ngIf="dataForm.get('email')?.touched && dataForm.get('email')?.errors?.['required']" class="alert alert-danger py-1 mt-1" role="alert">
+      * This field is required
+    </div>
+    <div *ngIf="dataForm.get('email')?.touched && dataForm.get('email')?.errors?.['minlength']" class="alert alert-danger py-1 mt-1" role="alert">
+      * The email has entered contains very few characters (min: {{dataForm.get('email')?.errors?.['minlength']?.requiredLength}})
+    </div>
+    <div *ngIf="dataForm.get('email')?.touched && dataForm.get('email')?.errors?.['maxlength']" class="alert alert-danger py-1 mt-1" role="alert">
+      * The email has entered contains so much characters (max: {{dataForm.get('email')?.errors?.['maxlength']?.requiredLength}})
+    </div>
+    <div *ngIf="dataForm.get('email')?.touched && dataForm.get('email')?.errors?.['pattern']" class="alert alert-danger py-1 mt-1" role="alert">
+      * Your email is invalid, use @ and custom domains (.com .net .org .etc)
     </div>
   </div>
 
@@ -35,6 +57,7 @@
   <div class="mb-3 w-75 mx-auto">
     <label for="info" class="form-label">Adicional Info</label>
     <textarea class="form-control" id="info" name="info" placeholder="Place adicional Info here"formControlName="info" rows="3"></textarea>
+    <p class="count">{{infoCharacters}}/{{maxLengthInfo}}</p>
     <!-- Validations -->
     <div *ngIf="dataForm.get('info')?.touched && dataForm.get('info')?.errors?.['minlength']" class="alert alert-danger py-1 mt-1" role="alert">
       * The information entered contains very few characters (min: {{dataForm.get('info')?.errors?.['minlength']?.requiredLength}})
