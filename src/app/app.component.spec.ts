@@ -1,29 +1,67 @@
-import { TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
+import { ReactiveFormsModule, FormGroup, Validators, FormControl } from '@angular/forms';
 
 describe('AppComponent', () => {
-  beforeEach(() => TestBed.configureTestingModule({
-    imports: [RouterTestingModule],
-    declarations: [AppComponent]
-  }));
+  let component: AppComponent
+  let fixture: ComponentFixture<AppComponent>
 
-  it('should create the app', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app).toBeTruthy();
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [AppComponent],
+      imports: [ReactiveFormsModule],
+    }).compileComponents()
+  })
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(AppComponent)
+    component = fixture.componentInstance
+    fixture.detectChanges()
+  })
+
+  //test basico que verifica la creacion del componente
+  it('Correctly create App Component', () => {
+    expect(component).toBeTruthy()
   });
 
-  it(`should have as title 'Formularios-Reactivos'`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app.title).toEqual('Formularios-Reactivos');
-  });
+  it('bad email return error', () => {
+    component.dataForm = new FormGroup({
+      email: new FormControl('',
+       [Validators.required,
+        Validators.maxLength(30),
+        Validators.minLength(5),
+        Validators.pattern(/^[\w.-]+@[a-zA-Z\d.-]+\.[a-zA-Z]{2,}$/i)]
+      )
+    })
 
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.content span')?.textContent).toContain('Formularios-Reactivos app is running!');
-  });
+    component.dataForm.get('email')?.setValue('novalidemail.com')
+    expect(component.dataForm.get('email')?.hasError('pattern')).toBeTrue();
+  })
+
+
+  it('Verify incomplete input verifications',() =>{
+    fixture.detectChanges()
+
+    component.dataForm.patchValue({
+      name: "FormTest",
+      email: "examplenoemail",
+      info: "",
+      datalist: "Colombia",
+      password: "12234"
+    })
+
+    expect(component.dataForm.valid).toBeFalse()
+  })
+
+  it('verify if email is valid', () =>{
+    component.dataForm.patchValue({
+      name: "FormTest",
+      email: "example@email.com",
+      info: "Hello world this is a test unitary",
+      datalist: "Colombia",
+      password: "12234"
+    })
+
+    expect(component.dataForm.valid).toBeTrue()
+  })
 });
